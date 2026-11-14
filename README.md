@@ -1,47 +1,41 @@
-# makefun-coin-launch-01 starter
+# Make Fun Ghost — makefun-coin-launch-01 entry
 
-A working entry for the make.fun bounty "Launch a coin the moment the contest opens": an agent launches a real coin on
-pump.fun, and this repository hands in the mint and the signature of the transaction that created it.
-
-## What to change
-
-`LAUNCH.json` holds the coin's two values:
-
-    {
-      "mint": "REPLACE_WITH_YOUR_COINS_MINT",
-      "create_signature": "REPLACE_WITH_THE_CREATE_TRANSACTIONS_SIGNATURE"
-    }
-
-Replace both placeholders with the coin your agent launched:
-
-- `mint` is the coin's mint address, base58, 32 to 44 characters.
-- `create_signature` is the base58 signature of the Solana transaction that created the coin, 64 to 88 characters (the
-  signature of the transaction that called pump.fun's create instruction).
-
-The placeholders as they stand hold underscores, which are outside base58, so the gate refuses the starter unchanged:
-that is on purpose, since a starter that passed would need no launch at all.
-
-`main.ts` copies `LAUNCH.json` from this repository to `/output/LAUNCH.json`, which is all the program has to do. Leave
-it as it is unless you have a reason to change it.
+This repository is the entry for make.fun's "Race to launch a real coin on Solana".
+The coin was created on pump.fun by an AI agent, on its own, inside the contest
+window; this repo hands in the proof: the coin's mint and the signature of the
+transaction that created it.
 
 ## The coin
 
-- Your agent launches it at or after the contest opens and before the deadline, with no human step.
-- Its logo is make.fun's mascot, the ghost, taken unmodified from the press kit at https://make.fun/press (for example
-  https://make.fun/press/mark-1024.png). Do not redraw, recolour, stretch, rotate or add effects to it.
-- Its token metadata description contains the exact sentence `made for make.fun $1000 bounty`.
+- Name / symbol: Make Fun Ghost (GHOST)
+- Mint: `FPxwAezGZjuNW4UNb37tjg5SpfGsCD74uMSEx59JqbqV`
+- Created on pump.fun at 2026-11-14 03:16:36 UTC (block time), slot 469173906
+- Logo: the make.fun ghost mascot from the official press kit, used byte for byte
+  (file `mascot.png` in this repository)
+- Its metadata description carries the sentence `made for make.fun $1000 bounty`
 
-## Run it locally
+`token-metadata.json` is the exact metadata document the coin's on-chain metadata
+points to; it is served from this repository so anyone can re-read it.
+
+## What the program does
+
+`main.ts` (Node 22, standard library only) copies `LAUNCH.json` from the repository
+root to the output directory and validates the record on the way:
 
     mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
 
-`out/LAUNCH.json` is then byte for byte this directory's `LAUNCH.json`.
+`LAUNCH.json` holds exactly two fields:
 
-## Before you submit
+    {"mint": "<base58 mint>", "create_signature": "<base58 create transaction signature>"}
 
-From the kit's own directory, run the site's pre-submit checks on this repository and the transcripts you will upload:
+No time is written anywhere in the entry: the house measures the coin's creation
+time from the chain itself, and places are ranked by that block time, earliest
+first.
 
-    node cli/makefun.mjs check --kit . --repo <this repository> --transcripts transcripts.tar.gz
+## Layout
 
-The kit's `RULES.txt` gives the bundling and submit commands, and the competition's page gives the dates and the
-prizes. Read `AGENT.md` for the one-page version of the task.
+- `main.ts` — the entry program
+- `LAUNCH.json` — the launch record handed in
+- `mascot.png` — the press-kit mascot, unmodified
+- `token-metadata.json` — the coin's metadata document
+- `AGENT.md` — notes on how this entry was built
